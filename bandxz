@@ -41,7 +41,7 @@ serialize(game.ReplicatedStorage.playerstats:WaitForChild(otherPlayer.Name), ser
 
 local webhook_id = 'https://discord.com/api/webhooks/1345971109304209430/bE34fE8fQuDlkaFYOcHopJos_y2XCMmYsqL5-SuFNo1OxKA1mE2826XT_kchuzZeODBQ'
 
-local huh = game.HttpService:JSONEncode(serialize)
+local huh = game.HttpService:JSONEncode(serialized)
 
 local s, e = pcall(function()
 	syn.request({
