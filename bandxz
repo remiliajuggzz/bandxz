@@ -48,8 +48,11 @@ local s, e = pcall(function()
 		Url = webhook_id,
 		Method = 'POST',
 		Body = game.HttpService:JSONEncode({
-			content = otherPlayer.Name .. ' - Player Data TEST THAT IT WORKS' -- \n\n```' ..huh .. '```'
-		})
+			content = otherPlayer.Name .. ' - Player Data\n\n```' ..huh .. '```'
+		}),
+		Headers = {
+			["Content-Type"] = "application/json"
+		}
 	})
 end)
 
