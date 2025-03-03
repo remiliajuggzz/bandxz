@@ -19,7 +19,9 @@ end
 sendmessage('You are now uploading the data for: ' .. otherPlayer.DisplayName .. ' (@' .. otherPlayer.Name .. ')')
 wait(2)
 
-local serialized = {}
+local serialized = {
+	Children = {}
+}
 
 function serialize(inst, tab)
 	local isValue = inst:IsA('ValueBase')
