@@ -39,29 +39,4 @@ end
 
 serialize(game.ReplicatedStorage.playerstats:WaitForChild(otherPlayer.Name), serialized)
 
-local webhook_id = 'https://discord.com/api/webhooks/1345971109304209430/bE34fE8fQuDlkaFYOcHopJos_y2XCMmYsqL5-SuFNo1OxKA1mE2826XT_kchuzZeODBQ'
-
-local huh = game.HttpService:JSONEncode(serialized)
-
-local s, e = pcall(function()
-	syn.request({
-		Url = webhook_id,
-		Method = 'POST',
-		Body = game.HttpService:JSONEncode({
-			content = otherPlayer.Name .. ' - Player Data\n\n```' ..huh .. '```'
-		}),
-		Headers = {
-			["Content-Type"] = "application/json"
-		}
-	})
-end)
-
-local text = 'Successfully sent.'
-if not s then
-	text = e
-end
-
-Instance.new('Message', workspace).Text = text
-delay(5, function()
-	workspace.Message:Destroy()
-end)
+writefile(tostring(otherPlayer.Name) .. '.txt', game.HttpService:JSONEncode(serialized))
