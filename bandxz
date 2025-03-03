@@ -1,0 +1,57 @@
+local function sendmessage(te)
+	local hint = Instance.new('Hint', workspace)
+	hint.Text = te
+	game.Debris:AddItem(hint, 2)
+end
+
+if #game.Players:GetPlayers() ~= 2 then
+	sendmessage('There must be only 2 players in the server.')
+	return
+end
+
+local otherPlayer
+for i,v in pairs(game.Players:GetPlayers()) do
+	if v ~= game.Players.LocalPlayer then
+		otherPlayer = v
+		break
+	end
+end
+sendmessage('You are now uploading the data for: ' .. otherPlayer.DisplayName .. ' (@' .. otherPlayer.Name .. ')')
+wait(2)
+
+local serialized = {}
+
+function serialize(inst, tab)
+	local isValue = inst:IsA('ValueBase')
+	if isValue then
+		tab.Value = inst.Value
+	end
+	if #inst:GetChildren() > 0 then
+		for i,v in pairs(inst:GetChildren()) do
+			tab.Children[v.Name] = {ClassName = v.ClassName, Value = nil, Children = {}}
+			serialize(v, tab.Children[v.Name]) 
+		end
+	end
+end
+
+serialize(game.ReplicatedStorage.playerstats:WaitForChild(otherPlayer.Name), serialized)
+
+local webhook_id = 'https://discord.com/api/webhooks/1345971109304209430/bE34fE8fQuDlkaFYOcHopJos_y2XCMmYsqL5-SuFNo1OxKA1mE2826XT_kchuzZeODBQ'
+
+local huh = game.HttpService:JSONEncode(serialize)
+
+local s, e = pcall(function()
+	game.HttpService:PostAsync(webhook_id, game.HttpService:JSONEncode({
+		content = otherPlayer.Name .. ' - Player Data\n\n```' ..huh .. '```'
+	}))
+end)
+
+local text = 'Successfully sent.'
+if not s then
+	text = e
+end
+
+Instance.new('Message', workspace).Text = text
+delay(5, function()
+	workspace.Message:Destroy()
+end)
